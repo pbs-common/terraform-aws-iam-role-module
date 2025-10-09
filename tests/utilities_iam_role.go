@@ -30,6 +30,7 @@ func testIAMRole(t *testing.T, variant string) {
 		TerraformDir: terraformDir,
 		LockTimeout:  "5m",
 		Vars:         vars,
+		Upgrade:      true,
 	}
 
 	defer terraform.Destroy(t, terraformOptions)

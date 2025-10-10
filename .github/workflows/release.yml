@@ -2,7 +2,7 @@ name: Release
 on:
   push:
     branches: [ main ]
-  paths:
+    paths:
       - '*.tf'
 concurrency: release-${{ github.base_ref }}
 jobs:

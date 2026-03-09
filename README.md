@@ -5,7 +5,7 @@
 ### Using the Repo Source
 
 ```hcl
-github.com/pbs/terraform-aws-iam-role-module?ref=x.y.z
+github.com/pbs/terraform-aws-iam-role-module?ref=1.0.1
 ```
 
 ### Alternative Installation Methods
@@ -26,7 +26,7 @@ Integrate this module like so:
 
 ```hcl
 module "role" {
-  source = "github.com/pbs/terraform-aws-iam-role-module?ref=x.y.z"
+  source = "github.com/pbs/terraform-aws-iam-role-module?ref=1.0.1"
 
   policy_json = data.aws_iam_policy_document.policy_document.json
 
@@ -45,7 +45,7 @@ module "role" {
 
 If this repo is added as a subtree, then the version of the module should be close to the version shown here:
 
-`x.y.z`
+`1.0.1`
 
 Note, however that subtrees can be altered as desired within repositories.
 

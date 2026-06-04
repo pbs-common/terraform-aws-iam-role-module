@@ -40,3 +40,9 @@ variable "path" {
   default     = null
   type        = string
 }
+
+variable "aws_managed_policies" {
+  description = "List of AWS managed policy names to attach to the role (e.g. [\"AmazonS3ReadOnlyAccess\"])"
+  default     = []
+  type        = list(string)
+}

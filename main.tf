@@ -18,6 +18,13 @@ resource "aws_iam_role_policy_attachment" "policy_attachment" {
   policy_arn = aws_iam_policy.policy.arn
 }
 
+resource "aws_iam_role_policy_attachment" "aws_managed_policy_attachment" {
+  for_each = toset(var.aws_managed_policies)
+
+  role       = aws_iam_role.role.name
+  policy_arn = "arn:aws:iam::aws:policy/${each.value}"
+}
+
 resource "aws_iam_instance_profile" "instance_profile" {
   count = var.create_instance_profile ? 1 : 0
   name  = local.name

@@ -5,7 +5,7 @@
 ### Using the Repo Source
 
 ```hcl
-github.com/pbs/terraform-aws-iam-role-module?ref=1.0.1
+github.com/pbs/terraform-aws-iam-role-module?ref=x.y.z
 ```
 
 ### Alternative Installation Methods
@@ -26,7 +26,7 @@ Integrate this module like so:
 
 ```hcl
 module "role" {
-  source = "github.com/pbs/terraform-aws-iam-role-module?ref=1.0.1"
+  source = "github.com/pbs/terraform-aws-iam-role-module?ref=x.y.z"
 
   policy_json = data.aws_iam_policy_document.policy_document.json
 
@@ -45,7 +45,7 @@ module "role" {
 
 If this repo is added as a subtree, then the version of the module should be close to the version shown here:
 
-`1.0.1`
+`x.y.z`
 
 Note, however that subtrees can be altered as desired within repositories.
 
@@ -68,7 +68,7 @@ Below is automatically generated documentation on this Terraform module using [t
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.35.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.47.0 |
 
 ## Modules
 
@@ -81,6 +81,7 @@ No modules.
 | [aws_iam_instance_profile.instance_profile](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
 | [aws_iam_policy.policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.aws_managed_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_default_tags.common_tags](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/default_tags) | data source |
 | [aws_iam_policy_document.assume_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -96,6 +97,7 @@ No modules.
 | <a name="input_product"></a> [product](#input\_product) | Tag used to group resources according to product | `string` | n/a | yes |
 | <a name="input_repo"></a> [repo](#input\_repo) | Tag used to point to the repo using this module | `string` | n/a | yes |
 | <a name="input_assume_role_policy"></a> [assume\_role\_policy](#input\_assume\_role\_policy) | JSON string of the assume role policy. If null, assumes that aws\_services have been provided. | `string` | `null` | no |
+| <a name="input_aws_managed_policies"></a> [aws\_managed\_policies](#input\_aws\_managed\_policies) | List of AWS managed policy names to attach to the role (e.g. ["AmazonS3ReadOnlyAccess"]) | `list(string)` | `[]` | no |
 | <a name="input_aws_services"></a> [aws\_services](#input\_aws\_services) | AWS services that will be assuming this role. e.g. [lambda, edgelambda] | `set(string)` | `[]` | no |
 | <a name="input_create_instance_profile"></a> [create\_instance\_profile](#input\_create\_instance\_profile) | Create an instance profile for this role | `bool` | `false` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of the IAM role. If use\_prefix is true, this will be the prefix of the role name. If null, will default to `product` value. | `string` | `null` | no |

@@ -7,6 +7,11 @@ module "role" {
   name       = var.role_name
   use_prefix = false
 
+  # The policy takes an exact name too, rather than a generated one. Without this the role would
+  # have a fixed name but its policy would not, which is what blocks adopting a policy that
+  # already exists.
+  policy_name = "${var.role_name}-permissions"
+
   environment  = var.environment
   product      = var.product
   repo         = var.repo

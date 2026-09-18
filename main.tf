@@ -9,7 +9,8 @@ resource "aws_iam_role" "role" {
 }
 
 resource "aws_iam_policy" "policy" {
-  name_prefix = "${local.name}-policy-"
+  name        = local.policy_name
+  name_prefix = local.policy_name_prefix
   policy      = var.policy_json
 }
 

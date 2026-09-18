@@ -1,7 +1,12 @@
 locals {
-  name                        = var.name != null ? var.name : var.product
-  role                        = var.use_prefix ? null : local.name
-  role_prefix                 = var.use_prefix ? "${local.name}-" : null
+  name        = var.name != null ? var.name : var.product
+  role        = var.use_prefix ? null : local.name
+  role_prefix = var.use_prefix ? "${local.name}-" : null
+
+  # A managed policy takes either a generated-with-suffix name or an exact one, never both.
+  policy_name        = var.policy_name
+  policy_name_prefix = var.policy_name == null ? "${local.name}-policy-" : null
+
   generate_assume_role_policy = var.assume_role_policy == null
   assume_role_policy          = var.assume_role_policy != null ? var.assume_role_policy : data.aws_iam_policy_document.assume_role_policy[0].json
 

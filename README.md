@@ -5,7 +5,7 @@
 ### Using the Repo Source
 
 ```hcl
-github.com/pbs/terraform-aws-iam-role-module?ref=1.0.2
+github.com/pbs/terraform-aws-iam-role-module?ref=x.y.z
 ```
 
 ### Alternative Installation Methods
@@ -26,7 +26,7 @@ Integrate this module like so:
 
 ```hcl
 module "role" {
-  source = "github.com/pbs/terraform-aws-iam-role-module?ref=1.0.2"
+  source = "github.com/pbs/terraform-aws-iam-role-module?ref=x.y.z"
 
   policy_json = data.aws_iam_policy_document.policy_document.json
 
@@ -41,11 +41,41 @@ module "role" {
 }
 ```
 
+### Naming
+
+By default both the role and the policy are named with a prefix, letting AWS append a unique suffix. The two are controlled separately:
+
+| Variable | Governs | Default |
+|---|---|---|
+| `use_prefix` | The role name. When false, the role takes `name` exactly. | `true` |
+| `policy_name` | The policy name. When set, the policy takes it exactly, regardless of `use_prefix`. | `null` (prefix `<name>-policy-`) |
+
+Pin both when adopting resources that already exist under fixed names — neither a role nor a policy can switch between a generated and a fixed name without being replaced:
+
+```hcl
+module "role" {
+  source = "github.com/pbs/terraform-aws-iam-role-module?ref=x.y.z"
+
+  policy_json = data.aws_iam_policy_document.policy_document.json
+
+  name        = "my-app-prod-ecs-tasks"
+  use_prefix  = false
+  policy_name = "my-app-prod-permissions"
+
+  organization = var.organization
+  environment  = var.environment
+  product      = var.product
+  repo         = var.repo
+}
+```
+
+See [the named example](/examples/named).
+
 ## Adding This Version of the Module
 
 If this repo is added as a subtree, then the version of the module should be close to the version shown here:
 
-`1.0.2`
+`x.y.z`
 
 Note, however that subtrees can be altered as desired within repositories.
 
@@ -68,7 +98,7 @@ Below is automatically generated documentation on this Terraform module using [t
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.47.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.62.0 |
 
 ## Modules
 
@@ -103,6 +133,7 @@ No modules.
 | <a name="input_name"></a> [name](#input\_name) | Name of the IAM role. If use\_prefix is true, this will be the prefix of the role name. If null, will default to `product` value. | `string` | `null` | no |
 | <a name="input_path"></a> [path](#input\_path) | Path to the role | `string` | `null` | no |
 | <a name="input_permissions_boundary_arn"></a> [permissions\_boundary\_arn](#input\_permissions\_boundary\_arn) | ARN of the permissions boundary to use for this role | `string` | `null` | no |
+| <a name="input_policy_name"></a> [policy\_name](#input\_policy\_name) | (optional) Exact name for the customer managed policy created from `policy_json`. When null, the policy is named with the prefix `${name}-policy-` and AWS appends a unique suffix. Set this to adopt a policy that already exists under a fixed name, since a policy cannot switch between a generated and a fixed name without being replaced. Unlike `use_prefix`, which governs the role name, this is always an exact name. | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Extra tags | `map(string)` | `{}` | no |
 | <a name="input_use_prefix"></a> [use\_prefix](#input\_use\_prefix) | Use prefix instead of explicit name | `bool` | `true` | no |
 
@@ -112,3 +143,5 @@ No modules.
 |------|-------------|
 | <a name="output_arn"></a> [arn](#output\_arn) | ARN of the IAM role |
 | <a name="output_name"></a> [name](#output\_name) | Name of the IAM role |
+| <a name="output_policy_arn"></a> [policy\_arn](#output\_policy\_arn) | ARN of the customer managed policy created from policy\_json |
+| <a name="output_policy_name"></a> [policy\_name](#output\_policy\_name) | Name of the customer managed policy created from policy\_json. Generated unless policy\_name was set. |

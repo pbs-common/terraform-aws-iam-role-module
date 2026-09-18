@@ -41,6 +41,36 @@ module "role" {
 }
 ```
 
+### Naming
+
+By default both the role and the policy are named with a prefix, letting AWS append a unique suffix. The two are controlled separately:
+
+| Variable | Governs | Default |
+|---|---|---|
+| `use_prefix` | The role name. When false, the role takes `name` exactly. | `true` |
+| `policy_name` | The policy name. When set, the policy takes it exactly, regardless of `use_prefix`. | `null` (prefix `<name>-policy-`) |
+
+Pin both when adopting resources that already exist under fixed names — neither a role nor a policy can switch between a generated and a fixed name without being replaced:
+
+```hcl
+module "role" {
+  source = "github.com/pbs/terraform-aws-iam-role-module?ref=x.y.z"
+
+  policy_json = data.aws_iam_policy_document.policy_document.json
+
+  name        = "my-app-prod-ecs-tasks"
+  use_prefix  = false
+  policy_name = "my-app-prod-permissions"
+
+  organization = var.organization
+  environment  = var.environment
+  product      = var.product
+  repo         = var.repo
+}
+```
+
+See [the named example](/examples/named).
+
 ## Adding This Version of the Module
 
 If this repo is added as a subtree, then the version of the module should be close to the version shown here:

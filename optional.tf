@@ -10,6 +10,12 @@ variable "use_prefix" {
   type        = bool
 }
 
+variable "policy_name" {
+  description = "(optional) Exact name for the customer managed policy created from `policy_json`. When null, the policy is named with the prefix `$${name}-policy-` and AWS appends a unique suffix. Set this to adopt a policy that already exists under a fixed name, since a policy cannot switch between a generated and a fixed name without being replaced. Unlike `use_prefix`, which governs the role name, this is always an exact name."
+  default     = null
+  type        = string
+}
+
 variable "aws_services" {
   description = "AWS services that will be assuming this role. e.g. [lambda, edgelambda]"
   type        = set(string)

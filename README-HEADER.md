@@ -22,6 +22,15 @@ It is recommended that you use the `aws_iam_policy_document` data source to gene
 
 The exception to this recommendation is when some complex logic is involved in resolving a dynamic policy. In this case, it can be advantageous to use the `jsonencode` function to encode the Terraform dictionary as a json string.
 
+### Permissions
+
+A role's permissions can come from either or both of:
+
+- `policy_json` — a customer managed policy this module creates and attaches.
+- `aws_managed_policies` — names of existing AWS managed policies to attach, e.g. `["service-role/AmazonECSTaskExecutionRolePolicy"]`.
+
+`policy_json` is optional. Leave it out for a role whose only job is to carry an AWS managed policy, such as an ECS task execution role — no customer managed policy is created, and the `policy_arn` and `policy_name` outputs are null. See [the managed-policies-only example](/examples/managed-policies-only).
+
 Integrate this module like so:
 
 ```hcl

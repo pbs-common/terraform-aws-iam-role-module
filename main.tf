@@ -9,14 +9,16 @@ resource "aws_iam_role" "role" {
 }
 
 resource "aws_iam_policy" "policy" {
+  count       = local.create_policy ? 1 : 0
   name        = local.policy_name
   name_prefix = local.policy_name_prefix
   policy      = var.policy_json
 }
 
 resource "aws_iam_role_policy_attachment" "policy_attachment" {
+  count      = local.create_policy ? 1 : 0
   role       = aws_iam_role.role.name
-  policy_arn = aws_iam_policy.policy.arn
+  policy_arn = aws_iam_policy.policy[0].arn
 }
 
 resource "aws_iam_role_policy_attachment" "aws_managed_policy_attachment" {

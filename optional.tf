@@ -10,6 +10,12 @@ variable "use_prefix" {
   type        = bool
 }
 
+variable "policy_json" {
+  description = "(optional) Policy document providing permissions on this role. When null, no customer managed policy is created and the role's permissions come from `aws_managed_policies` alone — as is the case for a role whose only job is to carry an AWS managed policy, such as an ECS task execution role."
+  default     = null
+  type        = string
+}
+
 variable "policy_name" {
   description = "(optional) Exact name for the customer managed policy created from `policy_json`. When null, the policy is named with the prefix `$${name}-policy-` and AWS appends a unique suffix. Set this to adopt a policy that already exists under a fixed name, since a policy cannot switch between a generated and a fixed name without being replaced. Unlike `use_prefix`, which governs the role name, this is always an exact name."
   default     = null

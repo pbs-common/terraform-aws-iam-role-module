@@ -3,6 +3,10 @@ locals {
   role        = var.use_prefix ? null : local.name
   role_prefix = var.use_prefix ? "${local.name}-" : null
 
+  # Without a policy document there is nothing to put in a customer managed policy, so the role
+  # relies on aws_managed_policies alone.
+  create_policy = var.policy_json != null
+
   # A managed policy takes either a generated-with-suffix name or an exact one, never both.
   policy_name        = var.policy_name
   policy_name_prefix = var.policy_name == null ? "${local.name}-policy-" : null

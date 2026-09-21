@@ -5,7 +5,7 @@
 ### Using the Repo Source
 
 ```hcl
-github.com/pbs/terraform-aws-iam-role-module?ref=1.0.3
+github.com/pbs/terraform-aws-iam-role-module?ref=x.y.z
 ```
 
 ### Alternative Installation Methods
@@ -22,11 +22,20 @@ It is recommended that you use the `aws_iam_policy_document` data source to gene
 
 The exception to this recommendation is when some complex logic is involved in resolving a dynamic policy. In this case, it can be advantageous to use the `jsonencode` function to encode the Terraform dictionary as a json string.
 
+### Permissions
+
+A role's permissions can come from either or both of:
+
+- `policy_json` — a customer managed policy this module creates and attaches.
+- `aws_managed_policies` — names of existing AWS managed policies to attach, e.g. `["service-role/AmazonECSTaskExecutionRolePolicy"]`.
+
+`policy_json` is optional. Leave it out for a role whose only job is to carry an AWS managed policy, such as an ECS task execution role — no customer managed policy is created, and the `policy_arn` and `policy_name` outputs are null. See [the managed-policies-only example](/examples/managed-policies-only).
+
 Integrate this module like so:
 
 ```hcl
 module "role" {
-  source = "github.com/pbs/terraform-aws-iam-role-module?ref=1.0.3"
+  source = "github.com/pbs/terraform-aws-iam-role-module?ref=x.y.z"
 
   policy_json = data.aws_iam_policy_document.policy_document.json
 
@@ -54,7 +63,7 @@ Pin both when adopting resources that already exist under fixed names — neithe
 
 ```hcl
 module "role" {
-  source = "github.com/pbs/terraform-aws-iam-role-module?ref=1.0.3"
+  source = "github.com/pbs/terraform-aws-iam-role-module?ref=x.y.z"
 
   policy_json = data.aws_iam_policy_document.policy_document.json
 
@@ -75,7 +84,7 @@ See [the named example](/examples/named).
 
 If this repo is added as a subtree, then the version of the module should be close to the version shown here:
 
-`1.0.3`
+`x.y.z`
 
 Note, however that subtrees can be altered as desired within repositories.
 
@@ -123,7 +132,6 @@ No modules.
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment (sharedtools, dev, staging, qa, prod) | `string` | n/a | yes |
 | <a name="input_organization"></a> [organization](#input\_organization) | Organization using this module. Used to prefix tags so that they are easily identified as being from your organization | `string` | n/a | yes |
 | <a name="input_owner"></a> [owner](#input\_owner) | Tag used to group resources according to product | `string` | n/a | yes |
-| <a name="input_policy_json"></a> [policy\_json](#input\_policy\_json) | Policy document providing permissions on this role | `string` | n/a | yes |
 | <a name="input_product"></a> [product](#input\_product) | Tag used to group resources according to product | `string` | n/a | yes |
 | <a name="input_repo"></a> [repo](#input\_repo) | Tag used to point to the repo using this module | `string` | n/a | yes |
 | <a name="input_assume_role_policy"></a> [assume\_role\_policy](#input\_assume\_role\_policy) | JSON string of the assume role policy. If null, assumes that aws\_services have been provided. | `string` | `null` | no |
@@ -133,6 +141,7 @@ No modules.
 | <a name="input_name"></a> [name](#input\_name) | Name of the IAM role. If use\_prefix is true, this will be the prefix of the role name. If null, will default to `product` value. | `string` | `null` | no |
 | <a name="input_path"></a> [path](#input\_path) | Path to the role | `string` | `null` | no |
 | <a name="input_permissions_boundary_arn"></a> [permissions\_boundary\_arn](#input\_permissions\_boundary\_arn) | ARN of the permissions boundary to use for this role | `string` | `null` | no |
+| <a name="input_policy_json"></a> [policy\_json](#input\_policy\_json) | (optional) Policy document providing permissions on this role. When null, no customer managed policy is created and the role's permissions come from `aws_managed_policies` alone — as is the case for a role whose only job is to carry an AWS managed policy, such as an ECS task execution role. | `string` | `null` | no |
 | <a name="input_policy_name"></a> [policy\_name](#input\_policy\_name) | (optional) Exact name for the customer managed policy created from `policy_json`. When null, the policy is named with the prefix `${name}-policy-` and AWS appends a unique suffix. Set this to adopt a policy that already exists under a fixed name, since a policy cannot switch between a generated and a fixed name without being replaced. Unlike `use_prefix`, which governs the role name, this is always an exact name. | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Extra tags | `map(string)` | `{}` | no |
 | <a name="input_use_prefix"></a> [use\_prefix](#input\_use\_prefix) | Use prefix instead of explicit name | `bool` | `true` | no |
@@ -143,5 +152,5 @@ No modules.
 |------|-------------|
 | <a name="output_arn"></a> [arn](#output\_arn) | ARN of the IAM role |
 | <a name="output_name"></a> [name](#output\_name) | Name of the IAM role |
-| <a name="output_policy_arn"></a> [policy\_arn](#output\_policy\_arn) | ARN of the customer managed policy created from policy\_json |
-| <a name="output_policy_name"></a> [policy\_name](#output\_policy\_name) | Name of the customer managed policy created from policy\_json. Generated unless policy\_name was set. |
+| <a name="output_policy_arn"></a> [policy\_arn](#output\_policy\_arn) | ARN of the customer managed policy created from policy\_json. Null when policy\_json was not provided. |
+| <a name="output_policy_name"></a> [policy\_name](#output\_policy\_name) | Name of the customer managed policy created from policy\_json. Generated unless policy\_name was set, and null when policy\_json was not provided. |

@@ -5,6 +5,10 @@ resource "aws_iam_role" "role" {
   permissions_boundary = var.permissions_boundary_arn
   path                 = var.path
 
+  # Left null unless the caller sets it: the attribute is optional+computed, so passing null
+  # leaves whatever the role already has rather than resetting an adopted role to AWS's 1 hour.
+  max_session_duration = var.max_session_duration
+
   tags = local.tags
 }
 

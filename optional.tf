@@ -53,6 +53,16 @@ variable "path" {
   type        = string
 }
 
+variable "max_session_duration" {
+  description = "Maximum session duration in seconds for this role, i.e. how long credentials from an AssumeRole last. Null leaves it unset, which AWS treats as the 1 hour default."
+  default     = null
+  type        = number
+  validation {
+    condition     = var.max_session_duration == null || try(var.max_session_duration >= 3600 && var.max_session_duration <= 43200, false)
+    error_message = "The max_session_duration variable must be between 3600 and 43200 seconds (1 to 12 hours)."
+  }
+}
+
 variable "aws_managed_policies" {
   description = "List of AWS managed policy names to attach to the role (e.g. [\"AmazonS3ReadOnlyAccess\"])"
   default     = []

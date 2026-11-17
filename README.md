@@ -5,7 +5,7 @@
 ### Using the Repo Source
 
 ```hcl
-github.com/pbs/terraform-aws-iam-role-module?ref=1.0.4
+github.com/pbs/terraform-aws-iam-role-module?ref=x.y.z
 ```
 
 ### Alternative Installation Methods
@@ -35,7 +35,7 @@ Integrate this module like so:
 
 ```hcl
 module "role" {
-  source = "github.com/pbs/terraform-aws-iam-role-module?ref=1.0.4"
+  source = "github.com/pbs/terraform-aws-iam-role-module?ref=x.y.z"
 
   policy_json = data.aws_iam_policy_document.policy_document.json
 
@@ -63,7 +63,7 @@ Pin both when adopting resources that already exist under fixed names — neithe
 
 ```hcl
 module "role" {
-  source = "github.com/pbs/terraform-aws-iam-role-module?ref=1.0.4"
+  source = "github.com/pbs/terraform-aws-iam-role-module?ref=x.y.z"
 
   policy_json = data.aws_iam_policy_document.policy_document.json
 
@@ -84,7 +84,7 @@ See [the named example](/examples/named).
 
 If this repo is added as a subtree, then the version of the module should be close to the version shown here:
 
-`1.0.4`
+`x.y.z`
 
 Note, however that subtrees can be altered as desired within repositories.
 
@@ -107,7 +107,7 @@ Below is automatically generated documentation on this Terraform module using [t
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.62.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.71.0 |
 
 ## Modules
 
@@ -138,6 +138,7 @@ No modules.
 | <a name="input_aws_managed_policies"></a> [aws\_managed\_policies](#input\_aws\_managed\_policies) | List of AWS managed policy names to attach to the role (e.g. ["AmazonS3ReadOnlyAccess"]) | `list(string)` | `[]` | no |
 | <a name="input_aws_services"></a> [aws\_services](#input\_aws\_services) | AWS services that will be assuming this role. e.g. [lambda, edgelambda] | `set(string)` | `[]` | no |
 | <a name="input_create_instance_profile"></a> [create\_instance\_profile](#input\_create\_instance\_profile) | Create an instance profile for this role | `bool` | `false` | no |
+| <a name="input_max_session_duration"></a> [max\_session\_duration](#input\_max\_session\_duration) | Maximum session duration in seconds for this role, i.e. how long credentials from an AssumeRole last. Null leaves it unset, which AWS treats as the 1 hour default. | `number` | `null` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of the IAM role. If use\_prefix is true, this will be the prefix of the role name. If null, will default to `product` value. | `string` | `null` | no |
 | <a name="input_path"></a> [path](#input\_path) | Path to the role | `string` | `null` | no |
 | <a name="input_permissions_boundary_arn"></a> [permissions\_boundary\_arn](#input\_permissions\_boundary\_arn) | ARN of the permissions boundary to use for this role | `string` | `null` | no |
